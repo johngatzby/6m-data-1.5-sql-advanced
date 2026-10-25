@@ -133,6 +133,17 @@ Write a query (no CTE yet) that joins `claim` and `car`, and adds a column `avg_
 
 ```sql
 -- Step 2: Your query here
+
+select
+  cl.id,
+  cl.client_id,
+  c.car_type,
+  cl.claim_amt,
+  AVG (cl.claim_amt) over (partition by c.car_type) as avg_claim_by_car_type
+from
+  claim cl
+  inner join car c on cl.car_id = c.id
+  
 ```
 
 <details>
