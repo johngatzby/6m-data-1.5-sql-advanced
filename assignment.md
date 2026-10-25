@@ -106,6 +106,21 @@ Write those queries here:
 
 ```sql
 -- Your exploration queries
+SELECT
+  DISTINCT car_type
+from
+  car;
+SELECT
+  count(DISTINCT state)
+from
+  address;
+select
+  count(*)
+from
+  client cli
+  left join address a on cli.address_id = a.id
+where
+  a.id IS NULL;
 ```
 
 ---
