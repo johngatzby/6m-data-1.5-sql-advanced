@@ -143,7 +143,7 @@ select
 from
   claim cl
   inner join car c on cl.car_id = c.id
-  
+
 ```
 
 <details>
@@ -174,7 +174,7 @@ The catch: we can't do this in the same step as Step 2, because Step 2 uses a wi
 Wrap your Step 2 query in a CTE called `market_comparison`, then write a second CTE called `client_totals` that groups by `client_id` and sums `claim_amt`:
 
 ```sql
--- Step 3: Your query here
+-- Step 3: Your query here (MODEL ANSWER)
 WITH market_comparison AS (
     -- paste Step 2 query here
 ),
@@ -184,6 +184,33 @@ client_totals AS (
     GROUP BY client_id
 )
 SELECT * FROM client_totals LIMIT 10;
+
+-- Step 3: my answer
+with market_comparison AS (
+    select
+        cl.id,
+        cl.client_id,
+        c.car_type,
+        cl.claim_amt,
+        AVG (cl.claim_amt) over (partition by c.car_type) as avg_claim_by_car_type
+    from
+        claim cl
+        inner join car c on cl.car_id = c.id
+  ),
+  client_totals AS (
+  select 
+        client_id,
+        car_type,
+        sum(claim_amt) as total_claimed
+        
+        from market_comparison 
+        group by client_id, car_type --keeps car type for the report but means a client can appear once per car type
+        
+  )
+  
+select * from client_totals 
+order by client_id
+
 ```
 
 <details>
