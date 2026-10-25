@@ -258,6 +258,47 @@ client_details AS (
     INNER JOIN address a ON c.address_id = a.id
 )
 SELECT * FROM client_details LIMIT 10;
+
+-- My answer:
+
+with market_comparison AS (
+    select
+      cl.id,
+      cl.client_id,
+      c.car_type,
+      cl.claim_amt,
+      AVG (cl.claim_amt) over (partition by c.car_type) as avg_claim_by_car_type
+    from
+      claim cl
+      inner join car c on cl.car_id = c.id
+  ),
+  client_totals AS (
+    select
+      client_id,
+      car_type,
+      sum(claim_amt) as total_claimed
+    from
+      market_comparison
+    group by
+      client_id,
+      car_type --keeps car type for the report but means a client can appear once per car type
+  ),
+  client_details as (
+    select
+      c.id as client_id,
+      c.first_name || ' ' || c.last_name as client_name,
+      a.state,
+      ct.car_type,
+      ct.total_claimed
+    from
+      client_totals ct
+      Inner join client c on ct.client_id = c.id
+      inner join address a on c.address_id = a.id )
+    select
+      *
+    from
+      client_details
+    order by client_id;
 ```
 
 **Check:** You should now see client names and states alongside their totals.
