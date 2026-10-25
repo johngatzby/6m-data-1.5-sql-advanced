@@ -2,3 +2,4 @@ solutions/
 *.wal
 *.csv
 .DS_Store
+.vscode/
