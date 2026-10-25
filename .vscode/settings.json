@@ -1,0 +1,18 @@
+{
+    "workbench.editorAssociations": {
+        "*.copilotmd": "vscode.markdown.preview.editor",
+        "*.parquet": "duckdb.dataFileViewer",
+        "*.csv": "duckdb.dataFileViewer",
+        "*.tsv": "duckdb.dataFileViewer",
+        "*.xlsx": "duckdb.dataFileViewer"
+    },
+    "sqltools.connections": [
+        {
+            "previewLimit": 100,
+            "driver": "DuckDB",
+            "database": "${workspaceFolder:6m-data-1.5-sql-advanced}/db/unit-1-5.db",
+            "name": "Assignment-1.5"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}

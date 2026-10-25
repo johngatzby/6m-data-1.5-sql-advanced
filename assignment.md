@@ -15,6 +15,16 @@ Using the `claim` and `car` tables, write a SQL query to return a table containi
 Answer:
 
 ```sql
+select
+  cl.id,
+  cl.claim_date,
+  cl.travel_time,
+  cl.claim_amt,
+  c.car_type,
+  c.car_use
+from
+  claim cl
+  inner join car c on cl.car_id = c.id
 
 ```
 
@@ -25,7 +35,19 @@ Write a SQL query to compute the running total of the `travel_time` column for e
 Answer:
 
 ```sql
-
+ select
+  id,
+  car_id,
+  travel_time,
+  sum(travel_time) OVER (
+    partition by car_id
+    order by
+      id
+  ) as running_total
+from
+  claim
+order by
+  car_id
 ```
 
 ### Question 3
@@ -35,7 +57,27 @@ Using a Common Table Expression (CTE), write a SQL query to return a table conta
 Answer:
 
 ```sql
-
+with resale as (
+    select
+      car_use,
+      avg (resale_value) as avg_resale_value
+    from
+      car
+    GROUP by
+      car_use
+  )
+SELECT
+  c.id,
+  c.resale_value,
+  c.car_use,
+  resale.avg_resale_value
+from
+  car c
+  inner join resale on c.car_use = resale.car_use
+where
+  resale_value < avg_resale_value
+order by
+  c.id;
 ```
 
 # **Level Up: The Insurance Auditor Project**
