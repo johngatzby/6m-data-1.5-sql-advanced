@@ -335,6 +335,8 @@ ORDER BY state, state_rank;
 
 **Submission:** Assemble all four CTEs into one script, save it as a `.sql` file with comments on each CTE explaining *why* it exists (not just what it does). Share in **#peer-reviews** on Discord, or keep it in your own notes if self-studying.
 
+Full script: [insurance_auditor.sql](insurance_auditor.sql)
+
 ---
 
 ## **✅ Solutions**
@@ -362,7 +364,7 @@ INNER JOIN car c ON cl.car_id = c.id;
 
 ### Question 2
 
-**Why `PARTITION BY car_id`?** Without `PARTITION BY`, the running total would keep growing across *all* cars — claims from Car 1 and Car 2 would pile into the same counter. `PARTITION BY car_id` tells the database: "Reset the total counter each time the car_id changes." Each car gets its own independent running total, like separate bank accounts.
+*Why `PARTITION BY car_id`?** Without `PARTITION BY`, the running total would keep growing across *all* cars — claims from Car 1 and Car 2 would pile into the same counter. `PARTITION BY car_id` tells the database: "Reset the total counter each time the car_id changes." Each car gets its own independent running total, like separate bank accounts.
 
 **Why `ORDER BY id`?** A running total only makes sense if the rows are visited in a consistent order. `ORDER BY id` ensures we always add claims in the same sequence, giving us a stable, predictable total at each row.
 
